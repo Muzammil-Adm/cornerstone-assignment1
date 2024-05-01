@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Set permissions on /etc/passwd
+      file:
+        path: /etc/passwd
+        mode: 0644
+        owner: root
+        group: root
+
+    - name: Set permissions on /etc/shadow
+      file:
+        path: /etc/shadow
+        mode: 0640
+        owner: root
+        group: shadow
+
+    - name: Restrict /etc/shadow permissions
+      command: /usr/bin/chattr +i /etc/shadow
+      failed_when: false
+
+    - name: Set permissions on /etc/gshadow
+      file:
+        path: /etc/gshadow
+        mode: 0640
+        owner: root
+        group: shadow
+
+    - name: Restrict /etc/gshadow permissions
+      command: /usr/bin/chattr +i /etc/gshadow
+      failed_when: false
